@@ -37,14 +37,8 @@ export const createTask: RequestHandler = async (req: Request, res: Response): P
       );
       return;
     }
-
-    // Generate a unique ID for the task
-    const prefix = 'TASK';
-    const randomNum = Math.floor(Math.random() * 1000) + 1;
-    const id = `${prefix}-${randomNum}`;
-
+    
     const task = await Task.create({
-      id,
       title,
       type,
       priority,
@@ -86,6 +80,8 @@ export const getTasks: RequestHandler = async (_req: Request, res: Response): Pr
       ],
       order: [['createdAt', 'DESC']],
     });
+
+    console.log('Fetched tasks:', tasks);
 
     sendResponse(
       res,

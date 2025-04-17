@@ -4,8 +4,10 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Tasks', {
       id: {
-        type: Sequelize.STRING,
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER
       },
       title: {
         type: Sequelize.STRING, // ✅ Added title column
@@ -16,12 +18,12 @@ module.exports = {
         allowNull: false,
       },
       status: {
-        type: Sequelize.STRING, // ✅ Added status column
+        type: Sequelize.STRING,
         allowNull: false,
         defaultValue: 'pending',
       },
       assignedTo: {
-        type: Sequelize.INTEGER, // ✅ Matches model
+        type: Sequelize.STRING,
         allowNull: false,
       },
       type: {

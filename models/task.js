@@ -29,11 +29,11 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 'pending',
       },
       assignedTo: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true, // If a task can exist without an assignee
         references: {
           model: 'Users', // Should match your users table
-          key: 'id',
+          key: 'email',
         },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',

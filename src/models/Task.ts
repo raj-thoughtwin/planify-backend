@@ -1,24 +1,24 @@
-import { Model, DataTypes, Optional } from 'sequelize';
-import sequelize from '../config/database';
-import { User } from './User';
+import { Model, DataTypes, Optional } from "sequelize";
+import sequelize from "../config/database";
+import { User } from "./User";
 
 export enum TaskType {
-  BUG = 'bug',
-  TASK = 'task',
-  STORY = 'story'
+  BUG = "bug",
+  TASK = "task",
+  STORY = "story",
 }
 
 export enum TaskPriority {
-  HIGH = 'high',
-  MEDIUM = 'medium',
-  LOW = 'low'
+  HIGH = "high",
+  MEDIUM = "medium",
+  LOW = "low",
 }
 
 export enum TaskStatus {
-  TODO = 'To Do',
-  IN_PROGRESS = 'In Progress',
-  CODE_REVIEW = 'Code Review',
-  QA = 'QA (Deployed on Dev)'
+  TODO = "To Do",
+  IN_PROGRESS = "In Progress",
+  CODE_REVIEW = "Code Review",
+  QA = "QA (Deployed on Dev)",
 }
 
 // Define the TaskAttributes interface
@@ -35,10 +35,14 @@ interface TaskAttributes {
 }
 
 // Define TaskCreationAttributes for optional properties during creation
-interface TaskCreationAttributes extends Optional<TaskAttributes, 'id' | 'createdAt' | 'updatedAt'> {}
+interface TaskCreationAttributes
+  extends Optional<TaskAttributes, "id" | "createdAt" | "updatedAt"> {}
 
 // Extend Model with attributes and creation attributes
-class Task extends Model<TaskAttributes, TaskCreationAttributes> implements TaskAttributes {
+class Task
+  extends Model<TaskAttributes, TaskCreationAttributes>
+  implements TaskAttributes
+{
   public id!: string;
   public title!: string;
   public description?: string;
@@ -53,10 +57,9 @@ class Task extends Model<TaskAttributes, TaskCreationAttributes> implements Task
 Task.init(
   {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4, // Auto-generate UUIDs
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
-      allowNull: false,
     },
     title: {
       type: DataTypes.STRING,
@@ -74,7 +77,7 @@ Task.init(
       type: DataTypes.ENUM(...Object.values(TaskPriority)),
       allowNull: false,
     },
-    assignedTo: { 
+    assignedTo: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -96,11 +99,15 @@ Task.init(
   },
   {
     sequelize,
-    modelName: 'Task',
+    modelName: "Task",
     timestamps: true,
   }
 );
 
-Task.belongsTo(User, { foreignKey: 'assignedTo', as: 'assigneeDetails' });
+Task.belongsTo(User, {
+  foreignKey: "assignedTo",
+  targetKey: "email",
+  as: "assigneeDetails",
+});
 
 export default Task;
